@@ -1,11 +1,5 @@
 ﻿using Eshop.Core.Entities;
 using Eshop.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Eshop.Infrastructure.Repositories
 {
@@ -16,6 +10,11 @@ namespace Eshop.Infrastructure.Repositories
         public ProductsRepository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public Product Get(int id)
+        {
+            return _dbContext.Products.Find(id);
         }
 
         public IEnumerable<Product> List()

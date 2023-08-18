@@ -21,11 +21,18 @@ namespace EshopApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("list")]
         public IEnumerable<ProductDTO> List()
         {
             var goods = _products.List();
             return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(goods);
+        }
+
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var goods = _products.Get(id);
+            return goods == null ? NotFound() : Ok(_mapper.Map<Product, ProductDTO>(goods));
         }
     }
 
