@@ -1,5 +1,5 @@
-﻿using Eshop.Core.Entities;
-using EshopApi.DTO;
+﻿using Eshop.Api.DTOs;
+using Eshop.Core.Entities;
 
 namespace Eshop.Api
 {
@@ -10,6 +10,7 @@ namespace Eshop.Api
             services.AddAutoMapper((configuration) =>
             {
                 configuration.CreateMap<Product, ProductDTO>();
+                configuration.CreateMap<ProductDescriptionDTO, Product>();
             });
         }
     }

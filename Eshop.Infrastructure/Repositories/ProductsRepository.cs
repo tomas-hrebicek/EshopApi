@@ -1,5 +1,6 @@
 ﻿using Eshop.Core.Entities;
 using Eshop.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Eshop.Infrastructure.Repositories
 {
@@ -20,6 +21,12 @@ namespace Eshop.Infrastructure.Repositories
         public IEnumerable<Product> List()
         {
             return _dbContext.Products.ToList();
+        }
+
+        public void Update(Product product)
+        {
+            _dbContext.Products.Update(product);
+            _dbContext.SaveChanges();
         }
     }
 }

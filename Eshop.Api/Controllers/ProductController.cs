@@ -1,8 +1,8 @@
 using AutoMapper;
 using Eshop.Core.Interfaces;
 using Eshop.Core.Entities;
-using EshopApi.DTO;
 using Microsoft.AspNetCore.Mvc;
+using Eshop.Api.DTOs;
 
 namespace EshopApi.Controllers
 {
@@ -24,15 +24,32 @@ namespace EshopApi.Controllers
         [HttpGet("list")]
         public IEnumerable<ProductDTO> List()
         {
-            var goods = _products.List();
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(goods);
+            var products = _products.List();
+            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var goods = _products.Get(id);
-            return goods == null ? NotFound() : Ok(_mapper.Map<Product, ProductDTO>(goods));
+            var product = _products.Get(id);
+            return product == null ? NotFound() : Ok(_mapper.Map<Product, ProductDTO>(product));
+        }
+
+        [HttpPatch("{id}/description")]
+        public IActionResult UpdateDescription(int id, [FromBody]ProductDescriptionDTO updateData)
+        {
+            var product = _products.Get(id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _mapper.Map(updateData, product);
+                _products.Update(product);
+                return Get(id);
+            }
         }
     }
 
