@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Eshop.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230818204517_InitialCreate")]
+    [Migration("20230819222646_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -81,6 +81,62 @@ namespace Eshop.Infrastructure.Migrations
                             ImgUri = "https://vanocka.img",
                             Name = "Vánočka",
                             Price = 49.9m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ImgUri = "https://pomeranc.img",
+                            Name = "Pomeranč",
+                            Price = 5m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ImgUri = "https://kiwi.img",
+                            Name = "Kiwi",
+                            Price = 7m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ImgUri = "https://syr.img",
+                            Name = "Sýr",
+                            Price = 18.9m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ImgUri = "https://jogurt.img",
+                            Name = "Jogurt",
+                            Price = 25.9m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ImgUri = "https://salam.img",
+                            Name = "Salám",
+                            Price = 69.9m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ImgUri = "https://mleko.img",
+                            Name = "Mléko",
+                            Price = 14.9m
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ImgUri = "https://paprika.img",
+                            Name = "Paprika",
+                            Price = 20m
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ImgUri = "https://patizon.img",
+                            Name = "Patizon",
+                            Price = 22m
                         });
                 });
 #pragma warning restore 612, 618
