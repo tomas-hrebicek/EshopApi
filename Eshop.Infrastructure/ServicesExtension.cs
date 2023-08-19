@@ -12,6 +12,11 @@ namespace Eshop.Infrastructure
         {
             services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
 
+            AddRepositories(services);
+        }
+
+        private static void AddRepositories(IServiceCollection services)
+        {
             services.AddTransient<IProducts, ProductsRepository>();
         }
     }

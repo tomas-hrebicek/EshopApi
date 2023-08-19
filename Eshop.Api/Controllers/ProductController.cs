@@ -3,6 +3,8 @@ using Eshop.Core.Interfaces;
 using Eshop.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Eshop.Api.DTOs;
+using Eshop.Application;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Eshop.Api.Controllers
 {
@@ -31,13 +33,13 @@ namespace Eshop.Api.Controllers
             return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
         }
 
-        /*[HttpGet("list")]
+        [HttpPost("list")]
         [MapToApiVersion("2.0")]
-        public IEnumerable<ProductDTO> ListPagination()
+        public PagedList<ProductDTO> ListPagination(PaginationDTO request)
         {
-            var products = _products.List();
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
-        }*/
+            var products = new PagedList<Product>(_products.Query(), request.PageNumber, request.PageSize);
+            return _mapper.Map<PagedList<Product>, PagedList<ProductDTO>>(products);
+        }
 
         [HttpGet("{id}")]
         [MapToApiVersion("1.0")]

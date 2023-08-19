@@ -6,6 +6,7 @@ namespace Eshop.Core.Interfaces
     {
         Product Get(int id);
         void Update(Product item);
-        IEnumerable<Product> List();        
+        IEnumerable<Product> List();
+        IQueryable<Product> Query();
     }
 }

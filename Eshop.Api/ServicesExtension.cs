@@ -1,4 +1,6 @@
-﻿using Eshop.Api.DTOs;
+﻿using AutoMapper;
+using Eshop.Api.DTOs;
+using Eshop.Application;
 using Eshop.Core.Entities;
 
 namespace Eshop.Api
@@ -9,6 +11,7 @@ namespace Eshop.Api
         {
             services.AddAutoMapper((configuration) =>
             {
+                configuration.CreateMap<PagedList<Product>, PagedList<ProductDTO>>();
                 configuration.CreateMap<Product, ProductDTO>();
                 configuration.CreateMap<ProductDescriptionDTO, Product>();
             });

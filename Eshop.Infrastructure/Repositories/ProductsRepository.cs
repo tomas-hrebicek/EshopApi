@@ -1,6 +1,6 @@
 ﻿using Eshop.Core.Entities;
+using Eshop.Core.Specification;
 using Eshop.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace Eshop.Infrastructure.Repositories
 {
@@ -21,6 +21,16 @@ namespace Eshop.Infrastructure.Repositories
         public IEnumerable<Product> List()
         {
             return _dbContext.Products.ToList();
+        }
+
+        public IQueryable<Product> Query()
+        {
+            return _dbContext.Products.AsQueryable<Product>();
+        }
+
+        public IEnumerable<Product> List(IPagination pagination)
+        {
+            return _dbContext.Products.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).ToList();
         }
 
         public void Update(Product product)
