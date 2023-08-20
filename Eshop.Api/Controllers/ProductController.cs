@@ -10,6 +10,9 @@ namespace Eshop.Api.Controllers
 {
     #region ProductController
 
+    /// <summary>
+    /// 
+    /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
@@ -25,6 +28,10 @@ namespace Eshop.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Retrieves all products list.
+        /// </summary>
+        /// <returns>a products list</returns>
         [HttpGet("list")]
         [MapToApiVersion("1.0")]
         public IEnumerable<ProductDTO> List()
@@ -33,14 +40,26 @@ namespace Eshop.Api.Controllers
             return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
         }
 
+        /// <summary>
+        /// Retrieves a products list page by page settings.
+        /// </summary>
+        /// <param name="pageSetting">Page settings</param>
+        /// <returns>a product list page</returns>
         [HttpPost("list")]
         [MapToApiVersion("2.0")]
-        public PagedList<ProductDTO> ListPagination(PaginationDTO request)
+        public PagedList<ProductDTO> ListPagination(PaginationDTO pageSetting)
         {
-            var products = new PagedList<Product>(_products.Query(), request.PageNumber, request.PageSize);
+            var products = new PagedList<Product>(_products.Query(), pageSetting.PageNumber, pageSetting.PageSize);
             return _mapper.Map<PagedList<Product>, PagedList<ProductDTO>>(products);
         }
 
+        /// <summary>
+        /// Retrieves a specific product by unique id.
+        /// </summary>
+        /// <param name="id">Product unique identificator</param>
+        /// <returns>a product</returns>
+        /// <response code="200">Product found</response>
+        /// <response code="404">Product not found</response>
         [HttpGet("{id}")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -51,6 +70,14 @@ namespace Eshop.Api.Controllers
             return product == null ? NotFound() : Ok(_mapper.Map<Product, ProductDTO>(product));
         }
 
+        /// <summary>
+        /// Updates a specific product description.
+        /// </summary>
+        /// <param name="id">Product unique identificator</param>
+        /// <param name="updateData">data for update</param>
+        /// <returns>an updated product</returns>
+        /// <response code="200">Product found and updated description</response>
+        /// <response code="404">Product not found</response>
         [HttpPatch("{id}/description")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]

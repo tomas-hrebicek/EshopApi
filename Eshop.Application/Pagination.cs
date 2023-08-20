@@ -4,6 +4,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Eshop.Application
 {
+    /// <summary>
+    /// Represents one page of items with information about page.
+    /// </summary>
+    /// <typeparam name="TItem"></typeparam>
     public sealed class PagedList<TItem>
     {
         public PagedList() { }
@@ -24,12 +28,18 @@ namespace Eshop.Application
         public List<TItem> Item { get; set; }
     }
 
+    /// <summary>
+    /// Represents informations about page.
+    /// </summary>
     public sealed class PagingInformation : Pagination
     {
         public int TotalItems { get; set; }
         public int TotalPages => (int)Math.Ceiling(this.TotalItems / (double)this.PageSize);
     }
 
+    /// <summary>
+    /// Represents pagination settings
+    /// </summary>
     public class Pagination : IPagination
     {
         private int _pageNumber = 1;

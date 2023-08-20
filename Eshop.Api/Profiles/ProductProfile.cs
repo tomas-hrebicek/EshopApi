@@ -5,6 +5,9 @@ using Eshop.Core.Entities;
 
 namespace Eshop.Api.Profiles
 {
+    /// <summary>
+    /// Provides confirugration for mapping Product objects to DTO (data transfer objects).
+    /// </summary>
     public class ProductProfile : Profile
     {
         public ProductProfile()

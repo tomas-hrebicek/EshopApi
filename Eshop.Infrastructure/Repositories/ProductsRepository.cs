@@ -4,6 +4,9 @@ using Eshop.Infrastructure.Data;
 
 namespace Eshop.Infrastructure.Repositories
 {
+    /// <summary>
+    /// Provides database operations with products.
+    /// </summary>
     internal sealed class ProductsRepository : Core.Interfaces.IProducts
     {
         private readonly ApplicationDbContext _dbContext;

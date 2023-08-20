@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Eshop.Infrastructure.Data
 {
+    /// <summary>
+    /// Represents application database structure, set all relations and can be used to query and save instances of entities.
+    /// </summary>
     internal class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
