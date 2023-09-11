@@ -12,7 +12,9 @@ namespace Sample.Infrastructure
         public static void AddInfrastructure(this IServiceCollection services, string connectionString)
         {
             connectionString = TranslateConnectionString(connectionString);
-            services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
+            services.AddDbContext<ApplicationDbContext>(opt => 
+                opt.UseSqlServer(connectionString)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             AddRepositories(services);
         }
