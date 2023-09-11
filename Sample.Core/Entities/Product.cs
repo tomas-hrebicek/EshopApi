@@ -1,4 +1,6 @@
-﻿namespace Sample.Core.Entities
+﻿using System;
+
+namespace Sample.Core.Entities
 {
     /// <summary>
     /// Represents Sample product.
@@ -7,7 +9,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string ImgUri { get; set; }
+        public Uri ImgUri { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
     }

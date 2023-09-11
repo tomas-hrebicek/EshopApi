@@ -22,7 +22,7 @@ namespace Sample.Api.DTOs
         /// Uri to product image.
         /// </summary>
         [Required]
-        public string ImgUri { get; set; }
+        public Uri ImgUri { get; set; }
         /// <summary>
         /// Product price.
         /// </summary>
