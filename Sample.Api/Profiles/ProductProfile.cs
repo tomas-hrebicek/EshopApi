@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Sample.Api.DTOs;
-using Sample.Application;
 using Sample.Core.Entities;
+using Sample.Core.Specification;
 
 namespace Sample.Api.Profiles
 {
@@ -12,6 +12,7 @@ namespace Sample.Api.Profiles
     {
         public ProductProfile()
         {
+            CreateMap<PaginationDTO, Pagination>();
             CreateMap<PagedList<Product>, PagedList<ProductDTO>>();
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductDescriptionDTO, Product>();

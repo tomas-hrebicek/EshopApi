@@ -1,5 +1,4 @@
-﻿using Sample.Core.Specification;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Sample.Api.DTOs
@@ -7,7 +6,7 @@ namespace Sample.Api.DTOs
     /// <summary>
     /// Represents paging settings
     /// </summary>
-    public class PaginationDTO : IPagination
+    public class PaginationDTO
     {
         /// <summary>
         /// What page to display.

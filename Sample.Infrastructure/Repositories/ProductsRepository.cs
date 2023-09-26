@@ -1,4 +1,5 @@
-﻿using Sample.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using Sample.Core.Entities;
 using Sample.Core.Specification;
 using Sample.Infrastructure.Data;
 
@@ -16,30 +17,38 @@ namespace Sample.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public Product Get(int id)
+        public async Task<Product> GetAsync(int id)
         {
-            return _dbContext.Products.Find(id);
+            return await _dbContext.Products.FindAsync(id);
         }
 
-        public IEnumerable<Product> List()
+        public async Task<IEnumerable<Product>> ListAsync()
         {
-            return _dbContext.Products.ToList();
+            return await _dbContext.Products.ToListAsync();
         }
 
-        public IQueryable<Product> Query()
+        public async Task<PagedList<Product>> ListAsync(Pagination pagination)
         {
-            return _dbContext.Products.AsQueryable<Product>();
+            if (pagination is null)
+            {
+                throw new ArgumentNullException(nameof(pagination));
+            }
+
+            var query = _dbContext.Products.AsQueryable();
+            var count = await query.CountAsync();
+            var list = await query.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync();
+            return new PagedList<Product>(list, new PagingInformation()
+            {
+                TotalItems = count,
+                PageNumber = pagination.PageNumber,
+                PageSize = pagination.PageSize
+            });
         }
 
-        public IEnumerable<Product> List(IPagination pagination)
-        {
-            return _dbContext.Products.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).ToList();
-        }
-
-        public void Update(Product product)
+        public async void UpdateAsync(Product product)
         {
             _dbContext.Products.Update(product);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

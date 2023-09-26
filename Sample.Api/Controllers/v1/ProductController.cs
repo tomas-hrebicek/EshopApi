@@ -26,10 +26,11 @@ namespace Sample.Api.Controllers.v1
         /// <returns>a products list</returns>
         [HttpGet("list")]
         [MapToApiVersion("1.0")]
-        public IEnumerable<ProductDTO> List()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductDTO>))]
+        public async Task<IActionResult> List()
         {
-            var products = _products.List();
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
+            var products = await _products.ListAsync();
+            return Ok(_mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products));
         }
 
         /// <summary>
@@ -41,12 +42,12 @@ namespace Sample.Api.Controllers.v1
         /// <response code="404">Product not found</response>
         [HttpGet("{id}")]
         [MapToApiVersion("1.0")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var product = _products.Get(id);
-            return product == null ? NotFound() : Ok(_mapper.Map<Product, ProductDTO>(product));
+            var product = await _products.GetAsync(id);
+            return product is null ? NotFound() : Ok(_mapper.Map<Product, ProductDTO>(product));
         }
 
         /// <summary>
@@ -59,21 +60,22 @@ namespace Sample.Api.Controllers.v1
         /// <response code="404">Product not found</response>
         [HttpPatch("{id}/description")]
         [MapToApiVersion("1.0")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProductDTO))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdateDescription(int id, [FromBody] ProductDescriptionDTO updateData)
+        public async Task<IActionResult> UpdateDescription(int id, [FromBody] ProductDescriptionDTO updateData)
         {
-            var product = _products.Get(id);
+            var product = await _products.GetAsync(id);
 
-            if (product == null)
+            if (product is null)
             {
                 return NotFound();
             }
             else
             {
                 _mapper.Map(updateData, product);
-                _products.Update(product);
-                return Get(id);
+                _products.UpdateAsync(product);
+                product = await _products.GetAsync(id);
+                return product is null ? NotFound() : Ok(_mapper.Map<Product, ProductDTO>(product));
             }
         }
     }

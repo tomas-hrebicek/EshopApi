@@ -1,14 +1,15 @@
 ﻿using Sample.Core.Entities;
+using Sample.Core.Specification;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Sample.Core.Interfaces
 {
     public interface IProducts
     {
-        Product Get(int id);
-        void Update(Product item);
-        IEnumerable<Product> List();
-        IQueryable<Product> Query();
+        Task<Product> GetAsync(int id);
+        void UpdateAsync(Product item);
+        Task<IEnumerable<Product>> ListAsync();
+        Task<PagedList<Product>> ListAsync(Pagination pagination);
     }
 }

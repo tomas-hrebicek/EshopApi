@@ -1,8 +1,8 @@
-﻿using Sample.Core.Specification;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Sample.Application
+namespace Sample.Core.Specification
 {
     /// <summary>
     /// Represents one page of items with information about page.
@@ -12,20 +12,19 @@ namespace Sample.Application
     {
         public PagedList() { }
 
-        public PagedList(IQueryable<TItem> source, int pageNumber, int pageSize)
+        public PagedList(IEnumerable<TItem> source, PagingInformation paging)
         {
-            this.Paging = new PagingInformation()
+            if (paging is null)
             {
-                TotalItems = source.Count(),
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
+                throw new ArgumentNullException(nameof(paging));
+            }
 
-            this.Item = source.Skip(pageSize * (pageNumber - 1)).Take(pageSize).ToList();
+            this.Paging = paging;
+            this.Item = source;
         }
 
         public PagingInformation Paging { get; set; }
-        public List<TItem> Item { get; set; }
+        public IEnumerable<TItem> Item { get; set; }
     }
 
     /// <summary>
@@ -40,13 +39,11 @@ namespace Sample.Application
     /// <summary>
     /// Represents pagination settings
     /// </summary>
-    public class Pagination : IPagination
+    public class Pagination
     {
         private int _pageNumber = 1;
         private int _pageSize = 10;
 
-        [DefaultValue(1)]
-        [Range(1, int.MaxValue)]
         public int PageNumber 
         {
             get => _pageNumber;
@@ -56,8 +53,6 @@ namespace Sample.Application
             }
         }
 
-        [DefaultValue(10)]
-        [Range(1, 1000)]
         public int PageSize
         {
             get => _pageSize;
