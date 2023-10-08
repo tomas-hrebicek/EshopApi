@@ -4,8 +4,9 @@ using Sample.Core.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Sample.Core.Specification;
 using System.Collections.Generic;
+using Sample.Core.Base;
+using Sample.Infrastructure;
 
 namespace Sample.Test.Controllers
 {
@@ -90,17 +91,11 @@ namespace Sample.Test.Controllers
             };
 
             var repository = new Mock<Core.Interfaces.IProducts>();
-            repository.Setup(x => x.ListAsync(It.IsAny<Pagination>())).ReturnsAsync((Pagination pagination) => new PagedList<Product>(
-                items.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize), new PagingInformation()
-            {
-                    TotalItems = items.Count,
-                    PageSize = pagination.PageSize,
-                    PageNumber = pagination.PageNumber
-            }));
+            repository.Setup(x => x.ListAsync(It.IsAny<PaginationSettings>())).ReturnsAsync((PaginationSettings pagination) => items.AsQueryable().ToPagedListAsync(pagination).Result);
 
             var controller = new Api.Controllers.v2.ProductController(repository.Object, _mapper);
 
-            PaginationDTO pagination = new PaginationDTO()
+            PaginationSettingsDTO pagination = new PaginationSettingsDTO()
             {
                 PageNumber = 1,
                 PageSize = 2
@@ -113,10 +108,9 @@ namespace Sample.Test.Controllers
             var okResult = actionResult.Should().BeOfType<OkObjectResult>().Subject;
             var value = okResult.Value.Should().NotBeNull().And.BeOfType<PagedList<ProductDTO>>().Subject;
             value.Should().NotBeNull();
-            value.Item.Should().NotBeNull().And.HaveCount(pagination.PageSize);
-            value.Paging.Should().NotBeNull();
-            value.Paging.TotalPages.Should().Be(2);
-            value.Paging.TotalItems.Should().Be(3);
+            value.Items.Should().NotBeNull().And.HaveCount(pagination.PageSize);
+            value.PageCount.Should().Be(2);
+            value.TotalCount.Should().Be(3);
         }
 
         [Fact]

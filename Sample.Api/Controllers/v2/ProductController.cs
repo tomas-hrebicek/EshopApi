@@ -1,9 +1,9 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Api.DTOs;
+using Sample.Core.Base;
 using Sample.Core.Entities;
 using Sample.Core.Interfaces;
-using Sample.Core.Specification;
 
 namespace Sample.Api.Controllers.v2
 {
@@ -26,12 +26,12 @@ namespace Sample.Api.Controllers.v2
         /// </summary>
         /// <param name="pageSetting">Page settings</param>
         /// <returns>a product list page</returns>
-        [HttpPost("list")]
+        [HttpGet("list")]
         [MapToApiVersion("2.0")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedList<ProductDTO>))]
-        public async Task<IActionResult> ListPagination(PaginationDTO pageSetting)
+        public async Task<IActionResult> ListPagination([FromRoute] PaginationSettingsDTO pageSetting)
         {
-            var settings = _mapper.Map<PaginationDTO, Pagination>(pageSetting);
+            var settings = _mapper.Map<PaginationSettingsDTO, PaginationSettings>(pageSetting);
             var products = await _products.ListAsync(settings);
             return Ok(_mapper.Map<PagedList<Product>, PagedList<ProductDTO>>(products));
         }

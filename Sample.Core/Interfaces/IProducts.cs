@@ -1,5 +1,5 @@
-﻿using Sample.Core.Entities;
-using Sample.Core.Specification;
+﻿using Sample.Core.Base;
+using Sample.Core.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,6 +10,6 @@ namespace Sample.Core.Interfaces
         Task<Product> GetAsync(int id);
         void UpdateAsync(Product item);
         Task<IEnumerable<Product>> ListAsync();
-        Task<PagedList<Product>> ListAsync(Pagination pagination);
+        Task<PagedList<Product>> ListAsync(PaginationSettings paginationSettings);
     }
 }

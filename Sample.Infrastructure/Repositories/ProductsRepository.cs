@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Sample.Core.Base;
 using Sample.Core.Entities;
-using Sample.Core.Specification;
 using Sample.Infrastructure.Data;
 
 namespace Sample.Infrastructure.Repositories
@@ -27,22 +27,15 @@ namespace Sample.Infrastructure.Repositories
             return await _dbContext.Products.ToListAsync();
         }
 
-        public async Task<PagedList<Product>> ListAsync(Pagination pagination)
+        public async Task<PagedList<Product>> ListAsync(PaginationSettings paginationSettings)
         {
-            if (pagination is null)
+            if (paginationSettings is null)
             {
-                throw new ArgumentNullException(nameof(pagination));
+                throw new ArgumentNullException(nameof(paginationSettings));
             }
 
             var query = _dbContext.Products.AsQueryable();
-            var count = await query.CountAsync();
-            var list = await query.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).ToListAsync();
-            return new PagedList<Product>(list, new PagingInformation()
-            {
-                TotalItems = count,
-                PageNumber = pagination.PageNumber,
-                PageSize = pagination.PageSize
-            });
+            return await query.ToPagedListAsync(paginationSettings);
         }
 
         public async void UpdateAsync(Product product)
