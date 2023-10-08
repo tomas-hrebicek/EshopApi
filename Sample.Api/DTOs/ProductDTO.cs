@@ -5,7 +5,7 @@ namespace Sample.Api.DTOs
     /// <summary>
     /// Represents a product.
     /// </summary>
-    public class ProductDTO
+    public record ProductDTO
     {
         /// <summary>
         /// Product unique identificator

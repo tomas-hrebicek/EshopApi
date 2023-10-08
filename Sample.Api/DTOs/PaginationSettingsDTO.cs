@@ -6,7 +6,7 @@ namespace Sample.Api.DTOs
     /// <summary>
     /// Represents paging settings
     /// </summary>
-    public class PaginationSettingsDTO
+    public record PaginationSettingsDTO
     {
         /// <summary>
         /// What page to display.

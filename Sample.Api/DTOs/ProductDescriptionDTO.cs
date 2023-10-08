@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents product description data.
     /// </summary>
-    public class ProductDescriptionDTO
+    public record ProductDescriptionDTO
     {
         /// <summary>
         /// product description
