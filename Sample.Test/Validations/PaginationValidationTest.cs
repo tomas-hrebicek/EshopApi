@@ -10,7 +10,7 @@
         [InlineData(1, 1001, false)]
         public void TestModelValidation(int pageNumber, int pageSize, bool isValid)
         {
-            var owner = new Sample.Api.DTOs.PaginationSettingsDTO()
+            var owner = new Application.DTOs.PaginationSettingsDTO()
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize

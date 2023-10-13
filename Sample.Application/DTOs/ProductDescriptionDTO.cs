@@ -1,4 +1,4 @@
-﻿namespace Sample.Api.DTOs
+﻿namespace Sample.Application.DTOs
 {
     /// <summary>
     /// Represents product description data.

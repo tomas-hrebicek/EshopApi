@@ -1,9 +1,7 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Sample.Api.DTOs;
+using Sample.Application.DTOs;
+using Sample.Application.Interfaces;
 using Sample.Core.Base;
-using Sample.Core.Entities;
-using Sample.Core.Interfaces;
 
 namespace Sample.Api.Controllers.v2
 {
@@ -12,13 +10,11 @@ namespace Sample.Api.Controllers.v2
     [ApiVersion("2.0")]
     public class ProductController : ApiController
     {
-        private IProducts _products;
-        private readonly IMapper _mapper;
+        private IProductsService _products;
 
-        public ProductController(IProducts products, IMapper mapper)
+        public ProductController(IProductsService products)
         {
             _products = products;
-            _mapper = mapper;
         }
 
         /// <summary>
@@ -31,9 +27,7 @@ namespace Sample.Api.Controllers.v2
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedList<ProductDTO>))]
         public async Task<IActionResult> ListPagination([FromRoute] PaginationSettingsDTO pageSetting)
         {
-            var settings = _mapper.Map<PaginationSettingsDTO, PaginationSettings>(pageSetting);
-            var products = await _products.ListAsync(settings);
-            return Ok(_mapper.Map<PagedList<Product>, PagedList<ProductDTO>>(products));
+            return Ok(await _products.ListAsync(pageSetting));
         }
     }
 

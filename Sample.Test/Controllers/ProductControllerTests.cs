@@ -1,5 +1,4 @@
 using AutoMapper;
-using Sample.Api.DTOs;
 using Sample.Core.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Sample.Core.Base;
 using Sample.Infrastructure;
+using Sample.Application.DTOs;
 
 namespace Sample.Test.Controllers
 {
@@ -23,24 +23,24 @@ namespace Sample.Test.Controllers
         public async void ListReturnsData()
         {
             // Arrange
-            var repository = new Mock<Core.Interfaces.IProducts>();
-            repository.Setup(x => x.ListAsync()).ReturnsAsync(new List<Product>()
+            var repository = new Mock<Application.Interfaces.IProductsService>();
+            repository.Setup(x => x.ListAsync()).ReturnsAsync(new List<ProductDTO>()
             {
-                new Product
+                new ProductDTO
                 {
                     Id = 1,
                     Name = "product name 1",
                     ImgUri = new Uri("https://www.img.test"),
                     Price = 123M
                 },
-                new Product
+                new ProductDTO
                 {
                     Id = 2,
                     Name = "product name 2",
                     ImgUri = new Uri("https://www.img.test"),
                     Price = 321M
                 },
-                new Product
+                new ProductDTO
                 {
                     Id = 3,
                     Name = "product name 3",
@@ -49,7 +49,7 @@ namespace Sample.Test.Controllers
                 }
             });
 
-            var controller = new Api.Controllers.v1.ProductController(repository.Object, _mapper);
+            var controller = new Api.Controllers.v1.ProductController(repository.Object);
 
             // Act
             var actionResult = await controller.List();
@@ -65,23 +65,23 @@ namespace Sample.Test.Controllers
         public async void ListPaginationReturnsData()
         {
             // Arrange
-            List<Product> items = new List<Product>()
+            List<ProductDTO> items = new List<ProductDTO>()
             {
-                new Product
+                new ProductDTO
                 {
                     Id = 1,
                     Name = "product name 1",
                     ImgUri = new Uri("https://www.img.test"),
                     Price = 123M
                 },
-                new Product
+                new ProductDTO
                 {
                     Id = 2,
                     Name = "product name 2",
                     ImgUri = new Uri("https://www.img.test"),
                     Price = 321M
                 },
-                new Product
+                new ProductDTO
                 {
                     Id = 3,
                     Name = "product name 3",
@@ -90,10 +90,17 @@ namespace Sample.Test.Controllers
                 }
             };
 
-            var repository = new Mock<Core.Interfaces.IProducts>();
-            repository.Setup(x => x.ListAsync(It.IsAny<PaginationSettings>())).ReturnsAsync((PaginationSettings pagination) => items.AsQueryable().ToPagedListAsync(pagination).Result);
+            var repository = new Mock<Application.Interfaces.IProductsService>();
+            repository.Setup(x => x.ListAsync(It.IsAny<PaginationSettingsDTO>())).ReturnsAsync((PaginationSettingsDTO pagination) =>
+            {
+                PaginationSettings p = _mapper.Map<PaginationSettingsDTO, PaginationSettings>(pagination);
+                var query = items.AsQueryable();
+                var totalCount = query.Count();
+                var list = query.Skip((p.PageNumber - 1) * p.PageSize).Take(p.PageSize).ToList();
+                return new PagedList<ProductDTO>(list, totalCount, p.PageNumber, p.PageSize);
+            });
 
-            var controller = new Api.Controllers.v2.ProductController(repository.Object, _mapper);
+            var controller = new Api.Controllers.v2.ProductController(repository.Object);
 
             PaginationSettingsDTO pagination = new PaginationSettingsDTO()
             {
@@ -117,8 +124,8 @@ namespace Sample.Test.Controllers
         public async void GetReturnsProduct()
         {
             // Arrange
-            var repository = new Mock<Core.Interfaces.IProducts>();
-            repository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((int id) => new Product()
+            var repository = new Mock<Application.Interfaces.IProductsService>();
+            repository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((int id) => new ProductDTO()
             {
                 Id = id,
                 Name = "product name",
@@ -126,7 +133,7 @@ namespace Sample.Test.Controllers
                 Price = 123M
             });
 
-            var controller = new Api.Controllers.v1.ProductController(repository.Object, _mapper);
+            var controller = new Api.Controllers.v1.ProductController(repository.Object);
 
             int expectedProductId = 123;
 
@@ -144,10 +151,10 @@ namespace Sample.Test.Controllers
         public async void GetReturnsNotFound()
         {
             // Arrange
-            var repository = new Mock<Core.Interfaces.IProducts>();
-            repository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Product)null);
+            var repository = new Mock<Application.Interfaces.IProductsService>();
+            repository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((ProductDTO)null);
 
-            var controller = new Api.Controllers.v1.ProductController(repository.Object, _mapper);
+            var controller = new Api.Controllers.v1.ProductController(repository.Object);
 
             // Act
             var actionResult = await controller.Get(123);
@@ -161,12 +168,8 @@ namespace Sample.Test.Controllers
         public async void UpdateDescriptionReturnsItemWithNewDescription()
         {
             // Arrange
-            int productId = 123;
-            ProductDescriptionDTO description = new ProductDescriptionDTO() { Description = "test description" };
-
-            var repository = new Mock<Core.Interfaces.IProducts>();
-            repository.Setup(x => x.UpdateAsync(It.IsAny<Product>()));
-            repository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((int id) => new Product()
+            var repository = new Mock<Application.Interfaces.IProductsService>();
+            repository.Setup(x => x.UpdateDescriptionAsync(It.IsAny<int>(), It.IsAny<ProductDescriptionDTO>())).ReturnsAsync((int id, ProductDescriptionDTO description) => new ProductDTO()
             {
                 Id = id,
                 Name = "testing product",
@@ -175,7 +178,10 @@ namespace Sample.Test.Controllers
                 Description = description.Description
             });
 
-            var controller = new Api.Controllers.v1.ProductController(repository.Object, _mapper);
+            int productId = 123;
+            ProductDescriptionDTO description = new ProductDescriptionDTO() { Description = "test description" };
+
+            var controller = new Api.Controllers.v1.ProductController(repository.Object);
 
             // Act
             var actionResult = await controller.UpdateDescription(productId, description);
@@ -192,14 +198,13 @@ namespace Sample.Test.Controllers
         public async void UpdateDescriptionBadProductIdReturnsNotFound()
         {
             // Arrange
+            var repository = new Mock<Application.Interfaces.IProductsService>();
+            repository.Setup(x => x.UpdateDescriptionAsync(It.IsAny<int>(), It.IsAny<ProductDescriptionDTO>())).ReturnsAsync((int id, ProductDescriptionDTO description) => (ProductDTO)null);
+
             int productId = 123;
             ProductDescriptionDTO description = new ProductDescriptionDTO() { Description = "test description" };
 
-            var repository = new Mock<Core.Interfaces.IProducts>();
-            repository.Setup(x => x.UpdateAsync(It.IsAny<Product>()));
-            repository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Product)null);
-
-            var controller = new Api.Controllers.v1.ProductController(repository.Object, _mapper);
+            var controller = new Api.Controllers.v1.ProductController(repository.Object);
 
             // Act
             var actionResult = await controller.UpdateDescription(productId, description);

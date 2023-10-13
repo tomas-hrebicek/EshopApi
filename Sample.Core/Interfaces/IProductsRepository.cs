@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Sample.Core.Interfaces
 {
-    public interface IProducts
+    public interface IProductsRepository
     {
         Task<Product> GetAsync(int id);
         void UpdateAsync(Product item);

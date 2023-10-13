@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Sample.Api.DTOs
+namespace Sample.Application.DTOs
 {
     /// <summary>
     /// Represents a product.

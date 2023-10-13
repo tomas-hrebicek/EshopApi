@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Sample.Api.DTOs;
+using Sample.Application.DTOs;
 using Sample.Core.Base;
 using Sample.Core.Entities;
 

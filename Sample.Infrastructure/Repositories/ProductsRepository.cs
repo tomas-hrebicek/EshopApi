@@ -8,7 +8,7 @@ namespace Sample.Infrastructure.Repositories
     /// <summary>
     /// Provides database operations with products.
     /// </summary>
-    internal sealed class ProductsRepository : Core.Interfaces.IProducts
+    internal sealed class ProductsRepository : Core.Interfaces.IProductsRepository
     {
         private readonly ApplicationDbContext _dbContext;
 

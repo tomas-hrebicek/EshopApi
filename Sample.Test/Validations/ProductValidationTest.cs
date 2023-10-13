@@ -10,7 +10,7 @@
         [InlineData(1, "name", "https://www.img.test", 0, "desc", true)]
         public void TestModelValidation(int id, string name, string imgUri, decimal price, string description, bool isValid)
         {
-            var owner = new Sample.Api.DTOs.ProductDTO()
+            var owner = new Application.DTOs.ProductDTO()
             {
                 Id = id,
                 Name = name,

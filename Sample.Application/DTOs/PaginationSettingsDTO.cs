@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Sample.Api.DTOs
+namespace Sample.Application.DTOs
 {
     /// <summary>
     /// Represents paging settings

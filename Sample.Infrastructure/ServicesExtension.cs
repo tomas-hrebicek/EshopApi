@@ -1,9 +1,8 @@
-﻿using Sample.Core.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Sample.Core.Interfaces;
 using Sample.Infrastructure.Data;
 using Sample.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Sample.Infrastructure
 {
@@ -27,7 +26,7 @@ namespace Sample.Infrastructure
 
         private static void AddRepositories(IServiceCollection services)
         {
-            services.AddTransient<IProducts, ProductsRepository>();
+            services.AddTransient<IProductsRepository, ProductsRepository>();
         }
     }
 }

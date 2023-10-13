@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Sample.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Default"));
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddApplicationLayer();
 
 builder.Services.AddControllers();
 
