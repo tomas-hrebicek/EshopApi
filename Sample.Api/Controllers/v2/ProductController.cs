@@ -10,7 +10,7 @@ namespace Sample.Api.Controllers.v2
     [ApiVersion("2.0")]
     public class ProductController : ApiController
     {
-        private IProductsService _products;
+        private readonly IProductsService _products;
 
         public ProductController(IProductsService products)
         {
