@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Logging.AddConfiguration(builder.Configuration).AddConsole();
+
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Default"));
 builder.Services.AddApplicationLayer();
 
@@ -38,18 +40,26 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(
-            options =>
-            {
-                var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
-                // build a swagger endpoint for each discovered API version
-                foreach (var description in provider.ApiVersionDescriptions)
-                {
-                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
-                }
-            });
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseHsts();
+}
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseSwagger();
+app.UseSwaggerUI(
+        options =>
+        {
+            var provider = app.Services.GetService<IApiVersionDescriptionProvider>();
+            // build a swagger endpoint for each discovered API version
+            foreach (var description in provider.ApiVersionDescriptions)
+            {
+                options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName);
+            }
+        });
 
 app.UseHttpsRedirection();
 
