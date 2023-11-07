@@ -1,4 +1,4 @@
-﻿using Sample.Core.Entities;
+﻿using Sample.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Sample.Infrastructure.Data

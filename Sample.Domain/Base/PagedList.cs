@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Sample.Core.Base
+namespace Sample.Domain.Domain
 {
     /// <summary>
     /// Represents a paged list of items.

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sample.Core.Base;
-using Sample.Core.Entities;
+using Sample.Domain.Domain;
+using Sample.Domain.Entities;
 using Sample.Infrastructure.Data;
 
 namespace Sample.Infrastructure.Repositories
@@ -8,7 +8,7 @@ namespace Sample.Infrastructure.Repositories
     /// <summary>
     /// Provides database operations with products.
     /// </summary>
-    internal sealed class ProductsRepository : Core.Interfaces.IProductsRepository
+    internal sealed class ProductsRepository : Domain.Interfaces.IProductsRepository
     {
         private readonly ApplicationDbContext _dbContext;
 

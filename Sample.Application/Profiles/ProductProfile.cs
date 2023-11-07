@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Sample.Application.DTOs;
-using Sample.Core.Base;
-using Sample.Core.Entities;
+using Sample.Domain.Domain;
+using Sample.Domain.Entities;
 
 namespace Sample.Api.Profiles
 {

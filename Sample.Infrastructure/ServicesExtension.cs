@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Sample.Core.Interfaces;
+using Sample.Domain.Interfaces;
 using Sample.Infrastructure.Data;
 using Sample.Infrastructure.Repositories;
 

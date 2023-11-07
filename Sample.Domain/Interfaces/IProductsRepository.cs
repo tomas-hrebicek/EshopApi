@@ -1,9 +1,9 @@
-﻿using Sample.Core.Base;
-using Sample.Core.Entities;
+﻿using Sample.Domain.Domain;
+using Sample.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Sample.Core.Interfaces
+namespace Sample.Domain.Interfaces
 {
     public interface IProductsRepository
     {

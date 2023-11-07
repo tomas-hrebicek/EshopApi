@@ -1,5 +1,5 @@
 ﻿using Sample.Application.DTOs;
-using Sample.Core.Base;
+using Sample.Domain.Domain;
 
 namespace Sample.Application.Interfaces
 {

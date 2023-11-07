@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sample.Core.Entities
+namespace Sample.Domain.Entities
 {
     /// <summary>
     /// Represents Sample product.

@@ -1,10 +1,10 @@
 using AutoMapper;
-using Sample.Core.Entities;
+using Sample.Domain.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
-using Sample.Core.Base;
+using Sample.Domain.Domain;
 using Sample.Infrastructure;
 using Sample.Application.DTOs;
 

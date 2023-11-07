@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Sample.Application.DTOs;
 using Sample.Application.Interfaces;
-using Sample.Core.Base;
+using Sample.Domain.Domain;
 
 namespace Sample.Api.Controllers.v2
 {

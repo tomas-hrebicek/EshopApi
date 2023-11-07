@@ -1,4 +1,4 @@
-﻿namespace Sample.Core.Base
+﻿namespace Sample.Domain.Domain
 {
     /// <summary>
     /// Represents pagination settings

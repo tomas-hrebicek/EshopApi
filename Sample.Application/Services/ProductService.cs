@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Sample.Application.DTOs;
 using Sample.Application.Interfaces;
-using Sample.Core.Base;
-using Sample.Core.Entities;
-using Sample.Core.Interfaces;
+using Sample.Domain.Domain;
+using Sample.Domain.Entities;
+using Sample.Domain.Interfaces;
 
 namespace Sample.Application.Services
 {

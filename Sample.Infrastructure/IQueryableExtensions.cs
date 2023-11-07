@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Sample.Core.Base;
+using Sample.Domain.Domain;
 
 namespace Sample.Infrastructure
 {
