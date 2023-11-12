@@ -16,7 +16,13 @@ builder.Logging.AddConfiguration(builder.Configuration).AddConsole();
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Default"));
 builder.Services.AddApplicationLayer();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
+{
+    options.InvalidModelStateResponseFactory = actionContext =>
+    {
+        return new BadRequestObjectResult(new BadRequestApiError(actionContext));
+    };
+});
 
 builder.Services.AddApiVersioning(config =>
 {

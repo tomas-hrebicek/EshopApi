@@ -37,7 +37,7 @@ namespace Sample.Api
         {
             if (context is null)
             {
-                throw new ArgumentNullException(nameof(context))
+                throw new ArgumentNullException(nameof(context));
             }
 
             RouteData routeData = context.GetRouteData();
