@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Sample.Application;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +48,7 @@ else
     app.UseHsts();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<SampleApiExceptionHandlerMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI(
