@@ -1,11 +1,12 @@
-using Sample.Api;
-using Sample.Infrastructure;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
+using Sample.Api;
 using Sample.Application;
-using System.Net;
+using Sample.Infrastructure;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,12 +30,10 @@ builder.Services.AddApiVersioning(config =>
     config.DefaultApiVersion = new ApiVersion(1, 0);
     config.AssumeDefaultVersionWhenUnspecified = true;
     config.ReportApiVersions = true;
-});
-
-builder.Services.AddVersionedApiExplorer(setup =>
+}).AddApiExplorer(options =>
 {
-    setup.GroupNameFormat = "'v'VVV";
-    setup.SubstituteApiVersionInUrl = true;
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
