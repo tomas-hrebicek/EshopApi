@@ -17,11 +17,13 @@ namespace Sample.Application.DTOs
         /// Product name
         /// </summary>
         [Required]
+        [MaxLength(300)]
         public string Name { get; set; }
         /// <summary>
         /// Uri to product image.
         /// </summary>
         [Required]
+        [MaxLength(2048)]
         public Uri ImgUri { get; set; }
         /// <summary>
         /// Product price.
@@ -31,6 +33,7 @@ namespace Sample.Application.DTOs
         /// <summary>
         /// Product description.
         /// </summary>
+        [MaxLength(5000)]
         public string Description { get; set; }
     }
 }

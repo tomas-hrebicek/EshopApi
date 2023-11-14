@@ -14,22 +14,10 @@ namespace Sample.Infrastructure.Data
 
         private void CreateModelProduct(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>()
-                .HasKey(b => b.Id)
-                .HasName("PK_Product_Id");
+            modelBuilder.Entity<Product>().HasKey(b => b.Id).HasName("PK_Product_Id");
+            
             modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
-
-            modelBuilder.Entity<Product>()
-                .Property(x => x.Id).IsRequired();
-
-            modelBuilder.Entity<Product>()
-                .Property(x => x.Name).IsRequired();
-
-            modelBuilder.Entity<Product>()
-                .Property(x => x.ImgUri).IsRequired();
-
-            modelBuilder.Entity<Product>()
-                .Property(x => x.Price).HasPrecision(18, 4).IsRequired();
+            modelBuilder.Entity<Product>().Property(x => x.Price).HasPrecision(18, 4);
         }
 
         private void DataSeedProduct(ModelBuilder modelBuilder)

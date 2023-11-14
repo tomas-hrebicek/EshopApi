@@ -1,4 +1,6 @@
-﻿namespace Sample.Application.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Sample.Application.DTOs
 {
     /// <summary>
     /// Represents product description data.
@@ -8,6 +10,7 @@
         /// <summary>
         /// product description
         /// </summary>
+        [MaxLength(5000)]
         public string Description { get; set; }
     }
 }

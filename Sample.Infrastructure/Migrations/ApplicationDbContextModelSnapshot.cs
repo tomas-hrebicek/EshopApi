@@ -21,7 +21,7 @@ namespace Sample.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Sample.Core.Entities.Product", b =>
+            modelBuilder.Entity("Sample.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,15 +30,18 @@ namespace Sample.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
+                        .HasMaxLength(5000)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImgUri")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 4)
@@ -47,20 +50,20 @@ namespace Sample.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Product_Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            ImgUri = "https://rohlik.img",
+                            ImgUri = "https://rohlik.img/",
                             Name = "Rohlík",
                             Price = 3.5m
                         },
                         new
                         {
                             Id = 2,
-                            ImgUri = "https://houska.img",
+                            ImgUri = "https://houska.img/",
                             Name = "Houska",
                             Price = 3.5m
                         },
@@ -68,70 +71,70 @@ namespace Sample.Infrastructure.Migrations
                         {
                             Id = 3,
                             Description = "houskový knedlík",
-                            ImgUri = "https://knedlik.img",
+                            ImgUri = "https://knedlik.img/",
                             Name = "Knedlík",
                             Price = 24.9m
                         },
                         new
                         {
                             Id = 4,
-                            ImgUri = "https://vanocka.img",
+                            ImgUri = "https://vanocka.img/",
                             Name = "Vánočka",
                             Price = 49.9m
                         },
                         new
                         {
                             Id = 5,
-                            ImgUri = "https://pomeranc.img",
+                            ImgUri = "https://pomeranc.img/",
                             Name = "Pomeranč",
                             Price = 5m
                         },
                         new
                         {
                             Id = 6,
-                            ImgUri = "https://kiwi.img",
+                            ImgUri = "https://kiwi.img/",
                             Name = "Kiwi",
                             Price = 7m
                         },
                         new
                         {
                             Id = 7,
-                            ImgUri = "https://syr.img",
+                            ImgUri = "https://syr.img/",
                             Name = "Sýr",
                             Price = 18.9m
                         },
                         new
                         {
                             Id = 8,
-                            ImgUri = "https://jogurt.img",
+                            ImgUri = "https://jogurt.img/",
                             Name = "Jogurt",
                             Price = 25.9m
                         },
                         new
                         {
                             Id = 9,
-                            ImgUri = "https://salam.img",
+                            ImgUri = "https://salam.img/",
                             Name = "Salám",
                             Price = 69.9m
                         },
                         new
                         {
                             Id = 10,
-                            ImgUri = "https://mleko.img",
+                            ImgUri = "https://mleko.img/",
                             Name = "Mléko",
                             Price = 14.9m
                         },
                         new
                         {
                             Id = 11,
-                            ImgUri = "https://paprika.img",
+                            ImgUri = "https://paprika.img/",
                             Name = "Paprika",
                             Price = 20m
                         },
                         new
                         {
                             Id = 12,
-                            ImgUri = "https://patizon.img",
+                            ImgUri = "https://patizon.img/",
                             Name = "Patizon",
                             Price = 22m
                         });
