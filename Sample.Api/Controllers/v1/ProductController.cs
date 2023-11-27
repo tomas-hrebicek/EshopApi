@@ -19,12 +19,6 @@ namespace Sample.Api.Controllers.v1
             _products = products;
         }
 
-        [HttpGet]
-        public string Test()
-        {
-            return "Hello";
-        }
-
         /// <summary>
         /// Retrieves all products list.
         /// </summary>
