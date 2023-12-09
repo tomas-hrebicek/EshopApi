@@ -12,7 +12,6 @@ namespace Sample.Api.Profiles
     {
         public ProductProfile()
         {
-            CreateMap<PaginationSettingsDTO, PaginationSettings>();
             CreateMap<PagedList<Product>, PagedList<ProductDTO>>();
             CreateMap<Product, ProductDTO>();
             CreateMap<ProductDescriptionDTO, Product>();
