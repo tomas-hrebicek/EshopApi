@@ -14,7 +14,9 @@ namespace Sample.Application
 
         private static void AddServices(IServiceCollection services)
         {
-            services.AddTransient<IProductsService, ProductService>();
+            services.AddTransient<ISecurityService, SecurityService>();
+            services.AddTransient<IUsersService, UsersService>();
+            services.AddTransient<IProductsService, ProductsService>();
         }
     }
 }
