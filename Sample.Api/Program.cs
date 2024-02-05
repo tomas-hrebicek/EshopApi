@@ -1,8 +1,9 @@
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Sample.Api;
 using Sample.Application;
 using Sample.Infrastructure;
@@ -14,6 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.AddConfiguration(builder.Configuration).AddConsole();
 
+builder.Services.AddTokenAuthentication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Default"));
 builder.Services.AddApplicationLayer();
 
@@ -25,11 +27,11 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
     };
 });
 
-builder.Services.AddApiVersioning(config =>
+builder.Services.AddApiVersioning(options =>
 {
-    config.DefaultApiVersion = new ApiVersion(1, 0);
-    config.AssumeDefaultVersionWhenUnspecified = true;
-    config.ReportApiVersions = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
 }).AddApiExplorer(options =>
 {
     options.GroupNameFormat = "'v'VVV";
@@ -38,7 +40,34 @@ builder.Services.AddApiVersioning(config =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c => c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"), false));
+builder.Services.AddSwaggerGen(options =>
+{ 
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml"), false);
+    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = JwtBearerDefaults.AuthenticationScheme
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = JwtBearerDefaults.AuthenticationScheme
+                }
+            },
+            new string[] { }
+        }
+    });
+});
+
 builder.Services.ConfigureOptions<ConfigureSwaggerOptions>();
 
 var app = builder.Build();
@@ -78,7 +107,9 @@ app.UseCors(policy =>
         .AllowAnyMethod();
 });
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

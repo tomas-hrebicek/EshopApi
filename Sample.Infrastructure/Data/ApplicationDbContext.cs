@@ -12,11 +12,17 @@ namespace Sample.Infrastructure.Data
             : base(options)
         { }
 
+        private void CreateModelUser(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasKey(b => b.Id).HasName("PK_User_Id");
+            modelBuilder.Entity<User>().Property(p => p.Id).ValueGeneratedOnAdd();
+        }
+
         private void CreateModelProduct(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().HasKey(b => b.Id).HasName("PK_Product_Id");
-            
             modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Product>().Property(x => x.Price).HasPrecision(18, 4);
         }
 
@@ -37,14 +43,31 @@ namespace Sample.Infrastructure.Data
                 new Product() { Id = 12, Name = "Patizon", ImgUri = new Uri("https://patizon.img"), Price = 22M });
         }
 
+        private void DataSeedUser(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(
+                new User() // password is password
+                { 
+                    Id = 1, 
+                    Username = "test", 
+                    Active = true, 
+                    Password = "53C15AEBC31C921D5CEB4DF7E15E279C06606855F0D8BF8542A5D5CDEA71D74BA741BA116F8BAB4C6F40AA3076000027747522EE268B572E8411F85ABC7AF711",
+                    Salt = "5D03756620AA910B167E97F8232967656A0DF57D36141C98B571F4059CEB8AB669288B3D10B8A0D49FF35C931477D02CEC89685ABB797918831E45F98A7A0DC2"
+                });
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            CreateModelUser(modelBuilder);
             CreateModelProduct(modelBuilder);
+
             DataSeedProduct(modelBuilder);
+            DataSeedUser(modelBuilder);
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
     }
 }

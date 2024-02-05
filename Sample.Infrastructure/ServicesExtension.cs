@@ -26,6 +26,7 @@ namespace Sample.Infrastructure
 
         private static void AddRepositories(IServiceCollection services)
         {
+            services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IProductsRepository, ProductsRepository>();
         }
     }

@@ -7,9 +7,9 @@ using Sample.Domain.Interfaces;
 
 namespace Sample.Application.Services
 {
-    internal class ProductService : IProductsService
+    internal class ProductsService : IProductsService
     {
-        public ProductService(IProductsRepository repository, IMapper mapper)
+        public ProductsService(IProductsRepository repository, IMapper mapper)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
