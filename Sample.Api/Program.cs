@@ -98,14 +98,7 @@ app.UseSwaggerUI(
 
 app.UseHttpsRedirection();
 
-string configAllowedOrigins = app.Configuration.GetValue<string>("AllowedOrigins", string.Empty);
-var allowedOrigins = configAllowedOrigins.Split(";", StringSplitOptions.RemoveEmptyEntries);
-app.UseCors(policy =>
-{
-    policy.WithOrigins(allowedOrigins)
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-});
+app.UseCors(builder.Configuration);
 
 app.UseAuthentication();
 app.UseAuthorization();
