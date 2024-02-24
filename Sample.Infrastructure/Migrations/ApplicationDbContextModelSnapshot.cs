@@ -156,6 +156,9 @@ namespace Sample.Infrastructure.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
+                    b.Property<string>("Roles")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Salt")
                         .IsRequired()
                         .HasMaxLength(128)
@@ -176,8 +179,9 @@ namespace Sample.Infrastructure.Migrations
                         {
                             Id = 1,
                             Active = true,
-                            Password = "4C488C654B5804093A9E6C7D5F63E3202026107F40CCF9206CAADC964D8FB8145B098B1F23D6A8D28582144A805643715BD8465ACD28BAA8AF66B8373B7C8B55E93511A7366B74E373EB2E708E19EA01F0B0A56CBB3B36AA37118F593B1E440546785B3D73DC537AEA7B9D65A4875501ADF2FA83B814245613EBE9400EAEED3A",
-                            Salt = "945362B4EC31796A9785F197BCD7C6E91F3ACCFDCD67ADC6F1399E529B952BDF4EF8CEF54918A21960E9D002DE2924F9BAE0955687B55DE68F14590EFBBF8DC1EACABAAB40998D1114987B18BA6DD2C7A8C2800CB0834D8542F30C6C6EF690575FEFBFFB219D6E18FC0742BA8805A291CFE1C49F1D5D2AD1B77032B6D89C21BF",
+                            Password = "53C15AEBC31C921D5CEB4DF7E15E279C06606855F0D8BF8542A5D5CDEA71D74BA741BA116F8BAB4C6F40AA3076000027747522EE268B572E8411F85ABC7AF711",
+                            Roles = "[1]",
+                            Salt = "5D03756620AA910B167E97F8232967656A0DF57D36141C98B571F4059CEB8AB669288B3D10B8A0D49FF35C931477D02CEC89685ABB797918831E45F98A7A0DC2",
                             Username = "test"
                         });
                 });

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Sample.Domain.Entities
 {
     /// <summary>
-    /// Represents Sample product.
+    /// Represents a product.
     /// </summary>
     public class Product
     {

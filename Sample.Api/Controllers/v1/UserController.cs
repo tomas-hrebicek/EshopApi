@@ -32,7 +32,7 @@ namespace Sample.Api.Controllers.v1
         /// </summary>
         /// <param name="pageSetting">Page settings</param>
         /// <returns>an users list page</returns>
-        [Authorize]
+        [Authorize(Role.Administrator)]
         [HttpGet("list")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedList<UserDTO>))]

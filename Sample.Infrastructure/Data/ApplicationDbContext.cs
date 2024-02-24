@@ -1,5 +1,9 @@
 ﻿using Sample.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Sample.Infrastructure.Data
 {
@@ -16,6 +20,13 @@ namespace Sample.Infrastructure.Data
         {
             modelBuilder.Entity<User>().HasKey(b => b.Id).HasName("PK_User_Id");
             modelBuilder.Entity<User>().Property(p => p.Id).ValueGeneratedOnAdd();
+            modelBuilder.Entity<User>().Property(p => p.Roles).HasConversion(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<ICollection<Role>>(v, (JsonSerializerOptions)null),
+                new ValueComparer<ICollection<Role>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToHashSet()));
         }
 
         private void CreateModelProduct(ModelBuilder modelBuilder)
@@ -24,6 +35,20 @@ namespace Sample.Infrastructure.Data
             modelBuilder.Entity<Product>().Property(p => p.Id).ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Product>().Property(x => x.Price).HasPrecision(18, 4);
+        }
+
+        private void DataSeedUser(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(
+                new User() // password is password
+                {
+                    Id = 1,
+                    Username = "test",
+                    Roles = new Role[] { Role.Administrator },
+                    Active = true,
+                    Password = "53C15AEBC31C921D5CEB4DF7E15E279C06606855F0D8BF8542A5D5CDEA71D74BA741BA116F8BAB4C6F40AA3076000027747522EE268B572E8411F85ABC7AF711",
+                    Salt = "5D03756620AA910B167E97F8232967656A0DF57D36141C98B571F4059CEB8AB669288B3D10B8A0D49FF35C931477D02CEC89685ABB797918831E45F98A7A0DC2"
+                });
         }
 
         private void DataSeedProduct(ModelBuilder modelBuilder)
@@ -41,19 +66,6 @@ namespace Sample.Infrastructure.Data
                 new Product() { Id = 10, Name = "Mléko", ImgUri = new Uri("https://mleko.img"), Price = 14.9M },
                 new Product() { Id = 11, Name = "Paprika", ImgUri = new Uri("https://paprika.img"), Price = 20M },
                 new Product() { Id = 12, Name = "Patizon", ImgUri = new Uri("https://patizon.img"), Price = 22M });
-        }
-
-        private void DataSeedUser(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<User>().HasData(
-                new User() // password is password
-                { 
-                    Id = 1, 
-                    Username = "test", 
-                    Active = true, 
-                    Password = "53C15AEBC31C921D5CEB4DF7E15E279C06606855F0D8BF8542A5D5CDEA71D74BA741BA116F8BAB4C6F40AA3076000027747522EE268B572E8411F85ABC7AF711",
-                    Salt = "5D03756620AA910B167E97F8232967656A0DF57D36141C98B571F4059CEB8AB669288B3D10B8A0D49FF35C931477D02CEC89685ABB797918831E45F98A7A0DC2"
-                });
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

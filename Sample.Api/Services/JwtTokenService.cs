@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Sample.Api.Interfaces;
 using Sample.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,6 +17,22 @@ namespace Sample.Api.Services
             _configuration = configuration;
         }
 
+        private static ClaimsIdentity CreateClaimsIdentity(User user)
+        {
+            var identity = new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+            });
+
+            foreach (var role in user.Roles)
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, role.ToString()));
+            }
+
+            return identity;
+        }
+
         public JwtToken CreateToken(User user)
         {
             var jwtConfiguration = _configuration.GetSection(JwtOptions.Key).Get<JwtOptions>();
@@ -25,14 +42,11 @@ namespace Sample.Api.Services
             var key = Encoding.ASCII.GetBytes(jwtConfiguration.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.Username)
-                }),
+                Subject = CreateClaimsIdentity(user),
                 Expires = DateTime.UtcNow + tokenValidity,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
-
+            
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
             return new JwtToken() 
