@@ -1,9 +1,7 @@
-﻿using Sample.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Sample.Domain.Entities;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Sample.Infrastructure.Data
 {

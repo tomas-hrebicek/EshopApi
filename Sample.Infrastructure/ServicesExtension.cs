@@ -12,7 +12,7 @@ namespace Sample.Infrastructure
         {
             connectionString = TranslateConnectionString(connectionString);
             services.AddDbContext<ApplicationDbContext>(opt => 
-                opt.UseSqlServer(connectionString)
+                opt.UseNpgsql(connectionString)
                 .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
 
             AddRepositories(services);
