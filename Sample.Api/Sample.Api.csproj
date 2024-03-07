@@ -5,6 +5,7 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <UserSecretsId>bfb42838-b4b0-4681-a042-9800c062d541</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
