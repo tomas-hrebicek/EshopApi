@@ -1,9 +1,0 @@
-- [ ] Dodělat aplikační vrstvu !!!
-- [ ] Využití návrhového vzoru Mediator (MediatR)
-- [ ] Zpracování vyjímek (middleware nebo filtr)
-- [ ] Stránkování přes GET + "učesat" stávající řešení
-- [ ] DTOs mají zbyteční public setter ? prozkoumat možnosti -: dále možný převod y class na record
-- [ ] Logování (Serilog? vzhledem k budoucí dockerizaci možná zbytečné - stačí log do stdout.. rozmyslet)
-- [ ] Docker
-- [ ] Dodělat integrační testy (RestSharp)
-- [ ] Dodělat unit testy
