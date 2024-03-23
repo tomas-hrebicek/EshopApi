@@ -6,8 +6,13 @@ using Sample.Infrastructure.Repositories;
 
 namespace Sample.Infrastructure
 {
-    public static class ServicesExtension
+    public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Adds services for infrastructure layer
+        /// </summary>
+        /// <param name="services">service collection</param>
+        /// <param name="connectionString">connection string for database</param>
         public static void AddInfrastructure(this IServiceCollection services, string connectionString)
         {
             connectionString = TranslateConnectionString(connectionString);

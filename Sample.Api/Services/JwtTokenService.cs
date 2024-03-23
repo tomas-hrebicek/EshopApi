@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using Sample.Api.Interfaces;
 using Sample.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
@@ -8,6 +7,9 @@ using System.Text;
 
 namespace Sample.Api.Services
 {
+    /// <summary>
+    /// Provides operations with authorization token.
+    /// </summary>
     public class JwtTokenService : ITokenService
     {
         IConfiguration _configuration;
@@ -33,6 +35,11 @@ namespace Sample.Api.Services
             return identity;
         }
 
+        /// <summary>
+        /// Creates authorization token for user.
+        /// </summary>
+        /// <param name="user">an user</param>
+        /// <returns>Authorization token for an user</returns>
         public JwtToken CreateToken(User user)
         {
             var jwtConfiguration = _configuration.GetSection(JwtOptions.Key).Get<JwtOptions>();

@@ -1,9 +1,7 @@
 using Asp.Versioning;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Sample.Application.DTOs;
 using Sample.Application.Interfaces;
-using Sample.Domain.Entities;
 
 namespace Sample.Api.Controllers.v1
 {

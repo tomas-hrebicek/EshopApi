@@ -30,7 +30,7 @@ namespace Sample.Application.Services
                 throw new ArgumentException("already exists"); 
             }
             
-            PasswordProvider passwordProvider = new PasswordProvider();
+            SecurityProvider passwordProvider = new SecurityProvider();
             var salt = passwordProvider.CreateSalt(HASH_LENGTH);
             var hash = passwordProvider.HashPassword(accountData.Password, salt);
 
@@ -55,7 +55,7 @@ namespace Sample.Application.Services
             }
             else
             {
-                PasswordProvider passwordProvider = new PasswordProvider();
+                SecurityProvider passwordProvider = new SecurityProvider();
                 bool passwordOk = passwordProvider.VerifyPassword(password, user.Password, user.Salt);
                 return passwordOk ? user : null;
             }

@@ -5,6 +5,14 @@ namespace Sample.Infrastructure
 {
     public static class IQueryableExtensions
     {
+        /// <summary>
+        /// Loads page by page settings from data source.
+        /// </summary>
+        /// <typeparam name="TItem">page item type</typeparam>
+        /// <param name="query">data source</param>
+        /// <param name="paginationSettings">page settings</param>
+        /// <returns>page from source</returns>
+        /// <exception cref="ArgumentNullException">query (data source) and pagination settings are required</exception>
         public static async Task<PagedList<TItem>> ToPagedListAsync<TItem>(this IQueryable<TItem> query, PaginationSettings paginationSettings)
         {
             if (query is null)

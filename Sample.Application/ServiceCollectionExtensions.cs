@@ -4,11 +4,15 @@ using Sample.Application.Services;
 
 namespace Sample.Application
 {
-    public static class ServicesExtension
+    public static class ServiceCollectionExtensions
     {
+        /// <summary>
+        /// Adds services for application layer
+        /// </summary>
+        /// <param name="services">service collection</param>
         public static void AddApplicationLayer(this IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(ServicesExtension).Assembly);
+            services.AddAutoMapper(typeof(ServiceCollectionExtensions).Assembly);
             AddServices(services);
         }
 

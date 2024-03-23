@@ -2,12 +2,15 @@
 using System.Text;
 namespace Sample.Application
 {
-    internal class PasswordProvider
+    /// <summary>
+    /// Provides security operations.
+    /// </summary>
+    internal class SecurityProvider
     {
         private const int DEFAULT_ITERATIONS = 350000;
         private static HashAlgorithmName DefaultHashAlgorithm = HashAlgorithmName.SHA512;
 
-        public PasswordProvider()
+        public SecurityProvider()
         {
             this.HashAlgorithm = DefaultHashAlgorithm;
             this.Iterations = DEFAULT_ITERATIONS;
