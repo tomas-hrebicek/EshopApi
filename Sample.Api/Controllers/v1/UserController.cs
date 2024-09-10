@@ -55,8 +55,8 @@ namespace Sample.Api.Controllers.v1
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Get(int id)
         {
-            var product = await _users.GetAsync(id);
-            return product is null ? NotFound() : Ok(product);
+            var user = await _users.GetAsync(id);
+            return user is null ? NotFound() : Ok(user);
         }
 
         /// <summary>

@@ -15,6 +15,8 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddValidatedControllers();
 builder.Services.AddVersioning();
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 builder.Services.AddSwagger();
 
 var app = builder.Build();
@@ -41,5 +43,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//MigrationProvider.Migrate(app.Services);
 
 app.Run();
