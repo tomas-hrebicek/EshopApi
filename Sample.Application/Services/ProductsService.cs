@@ -18,39 +18,47 @@ namespace Sample.Application.Services
         private readonly IMapper _mapper;
         private readonly IProductsRepository _repository;
 
-        public async Task<ProductDTO> GetAsync(int id)
+        public async Task<Result<ProductDTO>> GetAsync(int id)
         {
             var product = await _repository.GetAsync(id);
-            return _mapper.Map<Product, ProductDTO>(product);
+
+            if (product is null)
+            {
+                return Result.Failure<ProductDTO>(new NotFoundError($"product id = {id}"));
+            }
+            else
+            {
+                return Result.Success(_mapper.Map<Product, ProductDTO>(product));
+            }
         }
 
-        public async Task<IEnumerable<ProductDTO>> ListAsync()
+        public async Task<Result<IEnumerable<ProductDTO>>> ListAsync()
         {
             var products = await _repository.ListAsync();
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products);
+            return Result.Success(_mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTO>>(products));
         }
 
-        public async Task<PagedList<ProductDTO>> ListAsync(PaginationSettingsDTO paginationSettings)
+        public async Task<Result<PagedList<ProductDTO>>> ListAsync(PaginationSettingsDTO paginationSettings)
         {
             var settings = _mapper.Map<PaginationSettingsDTO, PaginationSettings>(paginationSettings);
             var products = await _repository.ListAsync(settings);
-            return _mapper.Map<PagedList<Product>, PagedList<ProductDTO>>(products);
+            return Result.Success(_mapper.Map<PagedList<Product>, PagedList<ProductDTO>>(products));
         }
 
-        public async Task<ProductDTO> UpdateDescriptionAsync(int productId, ProductDescriptionDTO description)
+        public async Task<Result<ProductDTO>> UpdateDescriptionAsync(int productId, ProductDescriptionDTO description)
         {
             var product = await _repository.GetAsync(productId);
 
             if (product is null)
             {
-                return null;
+                return Result.Failure<ProductDTO>(new NotFoundError($"product id = {productId}"));
             }
             else
             {
                 _mapper.Map(description, product);
                 _repository.UpdateAsync(product);
                 product = await _repository.GetAsync(productId);
-                return _mapper.Map<Product, ProductDTO>(product);
+                return Result.Success(_mapper.Map<Product, ProductDTO>(product));
             }
         }
     }

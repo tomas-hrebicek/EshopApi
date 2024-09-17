@@ -33,7 +33,7 @@ namespace Sample.Application
     {
         public ForbiddenOperationError(string description)
         {
-            Add("description", description);
+            this.Description = description;
         }
 
         public string Description
@@ -53,7 +53,7 @@ namespace Sample.Application
         {
             if (item is not null)
             {
-                Add("item", item);
+                this.Item = item;
             }
         }
 
@@ -71,6 +71,21 @@ namespace Sample.Application
         { }
 
         public NotFoundError(string description)
+            : base()
+        {
+            this.Description = description;
+        }
+
+        public string Description
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+    }
+
+    public class SecurityError : Error
+    {
+        public SecurityError(string description)
             : base()
         {
             this.Description = description;

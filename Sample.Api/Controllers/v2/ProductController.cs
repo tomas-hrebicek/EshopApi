@@ -23,12 +23,24 @@ namespace Sample.Api.Controllers.v2
         /// </summary>
         /// <param name="pageSetting">Page settings</param>
         /// <returns>a product list page</returns>
+        /// <response code="200">Product list loaded</response>
+        /// <response code="500">Internal server error</response>
         [HttpGet("list")]
         [MapToApiVersion("2.0")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PagedList<ProductDTO>))]
+        [ProducesResponseType<PagedList<ProductDTO>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<ApiError>(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ListPagination([FromRoute] PaginationSettingsDTO pageSetting)
         {
-            return Ok(await _products.ListAsync(pageSetting));
+            var result = await _products.ListAsync(pageSetting);
+
+            if (result.IsSuccess)
+            {
+                return Ok(result.Data);
+            }
+            else
+            {
+                return UnexpectedError(result.Error);
+            }
         }
     }
 

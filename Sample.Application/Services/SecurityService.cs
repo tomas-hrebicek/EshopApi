@@ -22,12 +22,12 @@ namespace Sample.Application.Services
         private readonly IMapper _mapper;
         private readonly IUsersRepository _repository;
 
-        public async Task<UserDTO> CreateAccount(CreateAccountDTO accountData)
+        public async Task<Result<UserDTO>> CreateAccount(CreateAccountDTO accountData)
         {
             var existingUser = await _repository.GetAsync(accountData.Username);
             if (existingUser is not null)
             {
-                throw new ArgumentException("already exists"); 
+                return Result.Failure<UserDTO>(new AlreadyExistsError<string>(accountData.Username));
             }
             
             SecurityProvider passwordProvider = new SecurityProvider();
@@ -42,22 +42,22 @@ namespace Sample.Application.Services
             };
 
             newUser = await _repository.InsertAsync(newUser);
-            return _mapper.Map<User, UserDTO>(newUser);
+            return Result.Success(_mapper.Map<User, UserDTO>(newUser));
         }
 
-        public async Task<User> Authenticate(string username, string password)
+        public async Task<Result<User>> Authenticate(string username, string password)
         {
             User user = await _repository.GetAsync(username);
             
             if (user is null)
             {
-                return null;
+                return Result.Failure<User>(new NotFoundError(username));
             }
             else
             {
                 SecurityProvider passwordProvider = new SecurityProvider();
                 bool passwordOk = passwordProvider.VerifyPassword(password, user.Password, user.Salt);
-                return passwordOk ? user : null;
+                return passwordOk ? Result.Success(user) : Result.Failure<User>(new SecurityError("Bad password"));
             }
         }
     }

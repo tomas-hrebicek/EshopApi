@@ -18,17 +18,20 @@ namespace Sample.Application.Services
         private readonly IMapper _mapper;
         private readonly IUsersRepository _repository;
 
-        public async Task<UserDTO> GetAsync(int id)
+        public async Task<Result<UserDTO>> GetAsync(int id)
         {
             var user = await _repository.GetAsync(id);
-            return _mapper.Map<User, UserDTO>(user);
+            return user is null 
+                ? Result.Failure<UserDTO>(new NotFoundError()) 
+                : Result.Success(_mapper.Map<User, UserDTO>(user));
         }
 
-        public async Task<PagedList<UserDTO>> ListAsync(PaginationSettingsDTO paginationSettings)
+        public async Task<Result<PagedList<UserDTO>>> ListAsync(PaginationSettingsDTO paginationSettings)
         {
             var settings = _mapper.Map<PaginationSettingsDTO, PaginationSettings>(paginationSettings);
             var users = await _repository.ListAsync(settings);
-            return _mapper.Map<PagedList<User>, PagedList<UserDTO>>(users);
+
+            return Result.Success(_mapper.Map<PagedList<User>, PagedList<UserDTO>>(users));
         }
     }
 }

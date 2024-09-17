@@ -5,9 +5,9 @@ namespace Sample.Application.Interfaces
 {
     public interface IProductsService
     {
-        Task<ProductDTO> GetAsync(int id);
-        Task<ProductDTO> UpdateDescriptionAsync(int productId, ProductDescriptionDTO description);
-        Task<IEnumerable<ProductDTO>> ListAsync();
-        Task<PagedList<ProductDTO>> ListAsync(PaginationSettingsDTO paginationSettings);
+        Task<Result<ProductDTO>> GetAsync(int id);
+        Task<Result<ProductDTO>> UpdateDescriptionAsync(int productId, ProductDescriptionDTO description);
+        Task<Result<IEnumerable<ProductDTO>>> ListAsync();
+        Task<Result<PagedList<ProductDTO>>> ListAsync(PaginationSettingsDTO paginationSettings);
     }
 }
