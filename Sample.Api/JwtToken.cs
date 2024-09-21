@@ -5,7 +5,7 @@
     /// </summary>
     public class JwtToken
     {
-        public string Data { get; set; }
+        public string Token { get; set; }
         public DateTime Expiration { get; set; }
     }
 }

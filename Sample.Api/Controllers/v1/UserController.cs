@@ -137,7 +137,7 @@ namespace Sample.Api.Controllers.v1
 
                 return Ok(new AuthenticationResultDTO()
                 {
-                    Token = token.Data,
+                    Token = token.Token,
                     Expiration = token.Expiration
                 });
             }

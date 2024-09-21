@@ -58,7 +58,7 @@ namespace Sample.Api.Services
 
             return new JwtToken() 
             {
-                Data = tokenHandler.WriteToken(securityToken),
+                Token = tokenHandler.WriteToken(securityToken),
                 Expiration = securityToken.ValidTo
             };
         }
