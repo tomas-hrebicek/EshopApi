@@ -15,6 +15,11 @@ builder.Services.AddApplicationLayer();
 builder.Services.AddValidatedControllers(options =>
 {
     options.ModelBinderProviders.Insert(0, new ModelBinderProvider());
+}).AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    options.JsonSerializerOptions.Converters.Add(new IsoDateTimeConverter());
+    options.JsonSerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString;
 });
 
 builder.Services.AddVersioning();
