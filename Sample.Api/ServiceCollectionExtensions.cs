@@ -72,9 +72,9 @@ namespace Sample.Api
         /// </summary>
         /// <param name="services">service collection</param>
         /// <returns>mvc builder</returns>
-        public static IMvcBuilder AddValidatedControllers(this IServiceCollection services)
+        public static IMvcBuilder AddValidatedControllers(this IServiceCollection services, Action<MvcOptions> configure)
         {
-            return services.AddControllers().ConfigureApiBehaviorOptions(options =>
+            return services.AddControllers(configure).ConfigureApiBehaviorOptions(options =>
             {
                 options.InvalidModelStateResponseFactory = actionContext =>
                 {

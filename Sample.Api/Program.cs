@@ -12,7 +12,11 @@ builder.Services.AddTokenAuthentication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Default"));
 builder.Services.AddApplicationLayer();
 
-builder.Services.AddValidatedControllers();
+builder.Services.AddValidatedControllers(options =>
+{
+    options.ModelBinderProviders.Insert(0, new ModelBinderProvider());
+});
+
 builder.Services.AddVersioning();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
