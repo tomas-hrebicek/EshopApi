@@ -44,8 +44,7 @@ namespace Sample.Infrastructure.Repositories
                 throw new ArgumentNullException(nameof(paginationSettings));
             }
 
-            var query = _dbContext.Users.AsQueryable();
-            return await query.ToPagedListAsync(paginationSettings);
+            return await _dbContext.Users.ToPagedListAsync(paginationSettings);
         }
     }
 }

@@ -34,8 +34,7 @@ namespace Sample.Infrastructure.Repositories
                 throw new ArgumentNullException(nameof(paginationSettings));
             }
 
-            var query = _dbContext.Products.AsQueryable();
-            return await query.ToPagedListAsync(paginationSettings);
+            return await _dbContext.Products.ToPagedListAsync(paginationSettings);
         }
 
         public async void UpdateAsync(Product product)
