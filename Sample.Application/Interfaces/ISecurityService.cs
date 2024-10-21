@@ -6,6 +6,6 @@ namespace Sample.Application.Interfaces
     public interface ISecurityService
     {
         Task<Result<UserDTO>> CreateAccount(CreateAccountDTO accountData);
-        Task<Result<User>> Authenticate(string login, string password);
+        Task<Result<Account>> Authenticate(string login, string password);
     }
 }

@@ -1,4 +1,7 @@
-﻿using Sample.Domain.Entities;
+﻿using Microsoft.IdentityModel.Tokens;
+using Sample.Api.Security;
+using Sample.Application;
+using System.Security.Claims;
 
 namespace Sample.Api.Interfaces
 {
@@ -7,6 +10,7 @@ namespace Sample.Api.Interfaces
     /// </summary>
     public interface ITokenService
     {
-        JwtToken CreateToken(User user);
+        Token CreateToken(Account account);
+        ClaimsPrincipal DecodeToken(string token, out SecurityToken validatedToken);
     }
 }

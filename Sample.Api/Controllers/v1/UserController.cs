@@ -2,13 +2,16 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Sample.Api.DTOs;
 using Sample.Api.Interfaces;
+using Sample.Api.Security;
 using Sample.Application;
 using Sample.Application.DTOs;
 using Sample.Application.Interfaces;
 using Sample.Domain.Domain;
 using Sample.Domain.Entities;
+using System.Security.Claims;
 
 namespace Sample.Api.Controllers.v1
 {
@@ -137,14 +140,65 @@ namespace Sample.Api.Controllers.v1
 
                 return Ok(new AuthenticationResultDTO()
                 {
-                    Token = token.Token,
-                    Expiration = token.Expiration
+                    Token = token,
+                    Account = result.Data
                 });
             }
             else
             {
                 return Unauthorized();
             }
+        }
+
+        /// <summary>
+        /// Validate token
+        /// <paramref name="token">token</paramref>
+        /// </summary>
+        /// <returns>token info</returns>
+        /// <response code="200">token is valid. returns account info</response>
+        /// <response code="403">not valid token</response>
+        [AllowAnonymous]
+        [HttpPost("check_token")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(AuthenticationResultDTO))]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public IActionResult CheckToken([FromBody] string token)
+        {
+            AuthenticationResultDTO response = null;
+
+            if (token != null && token.StartsWith("Bearer "))
+            {
+                token = token.Substring("Bearer ".Length).Trim();
+            }
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                ClaimsPrincipal claims;
+                SecurityToken validatedToken;
+
+                try
+                {
+                    claims = _token.DecodeToken(token, out validatedToken);
+                }
+                catch
+                {
+                    return Forbid();
+                }
+
+                if (validatedToken is not null)
+                {
+                    response = new AuthenticationResultDTO()
+                    {
+                        Token = new Token()
+                        {
+                            Data = token,
+                            Expiration = validatedToken.ValidTo
+                        },
+                        Account = ClaimsHelper.ToAccount(claims)
+                    };
+                }
+            }
+
+            return response is null ? Forbid() : Ok(response);
         }
     }
 

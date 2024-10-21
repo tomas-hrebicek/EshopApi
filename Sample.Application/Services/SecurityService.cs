@@ -45,19 +45,19 @@ namespace Sample.Application.Services
             return Result.Success(_mapper.Map<User, UserDTO>(newUser));
         }
 
-        public async Task<Result<User>> Authenticate(string username, string password)
+        public async Task<Result<Account>> Authenticate(string login, string password)
         {
-            User user = await _repository.GetAsync(username);
-            
+            User user = await _repository.GetAsync(login);
+
             if (user is null)
             {
-                return Result.Failure<User>(new NotFoundError(username));
+                return Result.Failure<Account>(new NotFoundError(login));
             }
             else
             {
                 SecurityProvider passwordProvider = new SecurityProvider();
                 bool passwordOk = passwordProvider.VerifyPassword(password, user.Password, user.Salt);
-                return passwordOk ? Result.Success(user) : Result.Failure<User>(new SecurityError("Bad password"));
+                return passwordOk ? Result.Success(_mapper.Map<User, Account>(user)) : Result.Failure<Account>(new SecurityError("Bad password"));
             }
         }
     }

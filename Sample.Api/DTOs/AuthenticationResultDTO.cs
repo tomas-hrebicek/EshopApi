@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Sample.Api.Security;
+using Sample.Application;
+using System.ComponentModel.DataAnnotations;
 
 namespace Sample.Api.DTOs
 {
@@ -7,16 +9,9 @@ namespace Sample.Api.DTOs
     /// </summary>
     public record AuthenticationResultDTO
     {
-        /// <summary>
-        /// Token
-        /// </summary>
         [Required]
-        public string Token { get; set; }
-
-        /// <summary>
-        /// Token validity
-        /// </summary>
+        public Account Account { get; set; }
         [Required]
-        public DateTime Expiration { get; set; }
+        public Token Token { get; set; }
     }
 }

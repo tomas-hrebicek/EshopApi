@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Sample.Api.Interfaces;
-using Sample.Api.Services;
+using Sample.Api.Security;
 using System.Reflection;
 using System.Text;
 
@@ -23,11 +23,12 @@ namespace Sample.Api
         /// <returns>service collection</returns>
         public static IServiceCollection AddTokenAuthentication(this IServiceCollection services, IConfiguration config)
         {
+            var jwtSection = config.GetSection(JwtOptions.SectionName);
+            services.Configure<JwtOptions>(jwtSection);
             services.AddTransient<ITokenService, JwtTokenService>();
 
-            var jwtConfiguration = config.GetSection(JwtOptions.Key).Get<JwtOptions>();
+            var jwtOptions = jwtSection.Get<JwtOptions>();
 
-            var key = Encoding.ASCII.GetBytes(jwtConfiguration.Secret);
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,14 +36,7 @@ namespace Sample.Api
             })
             .AddJwtBearer(x =>
             {
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = !string.IsNullOrEmpty(jwtConfiguration.Issuer),
-                    ValidateAudience = !string.IsNullOrEmpty(jwtConfiguration.Audience),
-                    ValidIssuer = jwtConfiguration.Issuer,
-                    ValidAudience = jwtConfiguration.Audience
-                };
+                x.TokenValidationParameters = JwtTokenService.CreateTokenValidationParameters(jwtOptions);
             });
 
             return services;
