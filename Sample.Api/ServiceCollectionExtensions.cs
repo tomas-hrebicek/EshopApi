@@ -114,7 +114,7 @@ namespace Sample.Api
                 });
             });
 
-            return services.ConfigureOptions<ConfigureSwaggerOptions>();
+            return services.ConfigureOptions<SwaggerOptions>();
         }
     }
 }

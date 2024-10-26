@@ -14,8 +14,12 @@ namespace Sample.Infrastructure
         {
             using (var scope = services.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                db.Database.Migrate();
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+                if (context.Database.HasPendingModelChanges())
+                {
+                    context.Database.Migrate();
+                }
             }
         }
     }
