@@ -10,7 +10,7 @@ namespace Sample.Infrastructure
         /// Starts application database context migration
         /// </summary>
         /// <param name="services">service provider</param>
-        public static void Migrate(IServiceProvider services)
+        public static void TryUpdate(IServiceProvider services)
         {
             using (var scope = services.CreateScope())
             {

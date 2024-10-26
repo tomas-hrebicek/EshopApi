@@ -54,6 +54,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//MigrationProvider.Migrate(app.Services);
+#if DEBUG
+
+MigrationProvider.TryUpdate(app.Services);
+
+#endif
 
 app.Run();
