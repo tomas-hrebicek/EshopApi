@@ -1,27 +1,26 @@
 ﻿using Sample.Application;
 using Sample.Domain.Entities;
 using System.Security.Claims;
-using System.Security.Principal;
 
 namespace Sample.Api.Security
 {
     internal static class ClaimsHelper
     {
-        internal static IEnumerable<Right> GetRights(ClaimsPrincipal claims)
+        internal static IEnumerable<Role> GetRoles(ClaimsPrincipal claims)
         {
             ArgumentNullException.ThrowIfNull(claims);
 
-            List<Right> rights = new List<Right>();
+            List<Role> roles = new List<Role>();
 
-            foreach (var role in claims.FindAll(ClaimTypes.Role) ?? Array.Empty<Claim>())
+            foreach (var roleData in claims.FindAll(ClaimTypes.Role) ?? Array.Empty<Claim>())
             {
-                if (Enum.TryParse(role.Value, true, out Right right))
+                if (Enum.TryParse(roleData.Value, true, out Role role))
                 {
-                    rights.Add(right);
+                    roles.Add(role);
                 }
             }
 
-            return rights.Distinct();
+            return roles.Distinct();
         }
 
         internal static ClaimsIdentity ToClaimsIdentity(Account account)
@@ -59,7 +58,7 @@ namespace Sample.Api.Security
             return int.TryParse(sid, out int result) ? result : default;
         }
 
-        internal static bool HasRight(ClaimsPrincipal claims, Role role)
+        internal static bool HasRole(ClaimsPrincipal claims, Role role)
         {
             ArgumentNullException.ThrowIfNull(claims);
 

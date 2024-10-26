@@ -40,6 +40,7 @@ else
     app.UseHsts();
 }
 
+// TODO: builder.Services.AddExceptionHandler<ExceptionHandler>(); (see topkioskapi)
 app.UseMiddleware<SampleApiExceptionHandlerMiddleware>();
 
 app.UseSwaggerVersionedUI(app.Services);
